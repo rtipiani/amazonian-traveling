@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+/* Efecto de máquina de escribir más lento */
+.typing {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 4px solid white;
+    animation: typing 3s steps(50, end) 1, blink 0.7s infinite;
+}
+
+/* Animación de escritura */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+/* Parpadeo del cursor */
+@keyframes blink {
+    0%, 100% {
+        border-color: transparent;
+    }
+    50% {
+        border-color: white;
+    }
+}
+
+/* Ajustes responsive */
+@media (max-width: 1024px) {
+    .typing {
+        font-size: 2rem; /* Ajusta el tamaño de fuente en tabletas */
+        animation-duration: 8s; /* Aumenta la duración de la animación en tabletas */
+    }
+}
+
+@media (max-width: 768px) {
+    .typing {
+        font-size: 1.75rem; /* Ajusta aún más el tamaño de la fuente en móviles */
+        animation-duration: 10s; /* Hace la animación aún más lenta en móviles */
+    }
+
+    /* Ajustes para los márgenes y el tamaño del texto en pantallas pequeñas */
+    .text-lg {
+        font-size: 1rem; /* Reduce el tamaño del texto en pantallas muy pequeñas */
+    }
+    .text-white {
+        font-size: 1.25rem; /* Ajusta los tamaños del texto del párrafo */
+    }
+}
+
+@media (max-width: 480px) {
+    .typing {
+        font-size: 1.25rem; /* Más pequeño en pantallas muy pequeñas */
+        animation-duration: 12s; /* Aumenta la duración de la animación para una experiencia más fluida */
+    }
+
+    .text-white {
+        font-size: 1rem; /* Ajuste adicional para párrafos en pantallas extremadamente pequeñas */
+    }
+}
