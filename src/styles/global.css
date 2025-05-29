@@ -11,9 +11,11 @@
     cursor: pointer;
     overflow: visible;
 }
+
 .dot.active {
     background-color: white;
 }
+
 .progress-bar {
     position: absolute;
     bottom: -6px;
@@ -24,9 +26,11 @@
     width: 0%;
     transition: none;
 }
+
 .progress-bar.animate {
     animation: progressFill 5s linear forwards;
 }
+
 @keyframes progressFill {
     from { width: 0%; }
     to { width: 100%; }
