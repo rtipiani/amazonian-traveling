@@ -1,14 +1,31 @@
 ---
 import '../styles/global.css';
+const {title} = Astro.props; 
 ---
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title} | Amazonían Traveling</title>
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<meta name="author" content="Amazonían Traveling" />
+		<link rel="canonical" href="https://www.amazoniantraveling.com/" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="{title} | Amazonían Traveling" />
+		<meta property="og:description" content="" />
+		<meta property="og:image" content="https://www.amazoniantraveling.com/og-image.png" />
+		<meta property="og:url" content="https://www.amazoniantraveling.com/" />
+		<meta property="og:site_name" content="Amazonían Traveling" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="{title} | Amazonían Traveling" />
+		<meta name="twitter:description" content="" />
+		<meta name="twitter:image" content="https://www.amazoniantraveling.com/og-image.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
 	</head>
 	<body>
 		<slot />

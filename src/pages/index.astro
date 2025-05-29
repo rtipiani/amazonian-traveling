@@ -3,8 +3,9 @@ import Footer from '../components/Footer.astro';
 import Tours from '../components/Tours.astro';
 import Hero from '../components/Hero.astro';
 import Layout from '../layouts/Layout.astro';
+const title = "Página de Inicio";
 ---
-<Layout>
+<Layout title={title}>
 	<Hero />
 	<Tours />
 	<Footer />

@@ -1,23 +1,157 @@
-<section class="relative min-h-screen flex flex-col items-center justify-center bg-cover bg-center" style="background-image: url('/amazon-hero.jpeg'); background-attachment: fixed;">
-    <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/70"></div>
-    
-    <div class="relative z-10 text-center px-4 sm:px-6 md:px-8 lg:px-12">
-        <h1 class="overflow-hidden whitespace-nowrap border-r-4 border-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 typing blink">
-            ¡Descubre el corazón del Amazonas!
-        </h1>
-        
-        <p class="text-lg sm:text-xl md:text-2xl text-white mb-6">
-            Vive la aventura que cambiará tu vida
-        </p>
-        
-        <a href="#tours" class="bg-yellow-500 hover:bg-green-800 text-green-900 hover:text-white font-bold py-3 px-6 rounded-full transition mt-6 sm:mt-8 md:mt-10">
-            <i class="fa-brands fa-whatsapp"></i> Reserva tu Aventura
-        </a>
+---
+const slides = [
+    {
+        image: "slide1.png",
+        title: "La puerta de entrada a la Amazonía Peruana",
+        buttonText: "Consultar Ahora",
+        position: "object-center",
+    },
+    {
+        image: "slide2.png",
+        title: "Vive la Aventura en la Selva con Amazonían Traveling",
+        buttonText: "Consultar Ahora",
+        position: "object-center",
+    },
+    {
+        image: "slide3.png",
+        title: "Descubre Iquitos con Expertos Locales y Experiencias Reales",
+        buttonText: "Consultar Ahora",
+        position: "object-[30%_50%]",
+    },
+];
+const generateSrcSet = (image: string) => ` ${image.replace(".avif", "-355w.avif")} 355w, ${image.replace(".avif", "-852w.avif")} 852w, ${image.replace(".avif", "-1278w.avif")} 1278w, ${image.replace(".avif", "-1680w.avif")} 1680w, ${image.replace(".avif", "-2000w.avif")} 2000w, ${image.replace(".avif", "-2268w.avif")} 2268w`;
+
+const sizes = `(min-width: 2268px) 2268px, (min-width: 2000px) 2000px,(min-width: 1680px) 1680px, (min-width: 1278px) 1278px, (min-width: 852px) 852px, (min-width: 355px) 355px, 100vw`;
+---
+<div class="relative w-full h-screen overflow-hidden group" tabindex="0">
+    <div id="slider" class="flex transition-transform duration-700 ease-in-out w-full h-full">
+        {slides.map((slide, index) => (
+            <div class="w-full h-full flex-shrink-0 relative aspect-[16/9]" data-slide={index}>
+                <picture>
+                    <source srcset={generateSrcSet(slide.image)} sizes={sizes} type="image/avif" />
+                    <img src={slide.image} alt={`Amazonía - ${slide.title}`} width="1920" height="1080" class={`w-full h-full object-cover ${slide.position}`} loading="lazy" decoding="async" />
+                </picture>
+                <div class="absolute inset-0 flex flex-col items-center justify-center text-white bg-black/40 px-4">
+                    <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-4 text-center leading-snug max-w-[90%] sm:max-w-[70%] lg:max-w-[50%]">
+                        {slide.title}
+                    </h2>
+                    <a href="https://wa.link/w8dfts" target="_blank" rel="noopener" class="bg-lime-600 text-white px-6 py-4 font-semibold rounded-lg shadow-md hover:bg-lime-700 transition-colors duration-200 flex items-center gap-3">
+                        {slide.buttonText}
+                        <i class="fa-brands fa-whatsapp text-xl" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        ))}
     </div>
-    
-    <div class="absolute bottom-10 animate-bounce">
-        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-        </svg>
+
+    <button id="prev" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-3 rounded-full z-30" aria-label="Slide anterior">
+        <i class="fa-solid fa-chevron-left fa-xl" aria-hidden="true"></i>
+    </button>
+    <button id="next" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-3 rounded-full z-30" aria-label="Slide siguiente">
+        <i class="fa-solid fa-chevron-right fa-xl" aria-hidden="true"></i>
+    </button>
+
+    <div id="indicators" class="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-4">
+        {slides.map((_, index) => (
+            <button class="dot" data-dot={index} aria-label={`Ir al slide ${index + 1}`} type="button">
+                <span class="progress-bar"></span>
+            </button>
+        ))}
     </div>
-</section>
+</div>
+
+<script is:inline>
+    window.onload = () => {
+        const slider = document.getElementById("slider");
+        const prev = document.getElementById("prev");
+        const next = document.getElementById("next");
+        const indicatorButtons = document.getElementById("indicators")?.children;
+        const container = slider?.parentElement;
+
+        if (!slider || !prev || !next || !indicatorButtons || !container) return;
+
+        let index = 0;
+        const slidesCount = slider.children.length;
+        let intervalId;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${index * 100}%)`;
+
+            for (let i = 0; i < indicatorButtons.length; i++) {
+                indicatorButtons[i].classList.remove("active");
+                const bar = indicatorButtons[i].querySelector(".progress-bar");
+                bar.classList.remove("animate");
+                bar.style.width = "0%";
+            }
+
+            indicatorButtons[index].classList.add("active");
+            const activeBar = indicatorButtons[index].querySelector(".progress-bar");
+
+            void activeBar.offsetWidth;
+
+            activeBar.classList.add("animate");
+        }
+
+        function goToSlide(i) {
+            index = i;
+            updateSlider();
+            restartAutoplay();
+        }
+
+        function nextSlide() {
+            index = (index + 1) % slidesCount;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            index = (index - 1 + slidesCount) % slidesCount;
+            updateSlider();
+        }
+
+        function startAutoplay() {
+            intervalId = setInterval(nextSlide, 5000);
+        }
+
+        function stopAutoplay() {
+            clearInterval(intervalId);
+        }
+
+        function restartAutoplay() {
+            stopAutoplay();
+            startAutoplay();
+        }
+
+        next.addEventListener("click", () => {
+            nextSlide();
+            restartAutoplay();
+        });
+
+        prev.addEventListener("click", () => {
+            prevSlide();
+            restartAutoplay();
+        });
+
+        container.addEventListener("mouseenter", stopAutoplay);
+        container.addEventListener("mouseleave", startAutoplay);
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowRight") {
+                nextSlide();
+                restartAutoplay();
+            }
+            if (e.key === "ArrowLeft") {
+                prevSlide();
+                restartAutoplay();
+            }
+        });
+
+        for (let i = 0; i < indicatorButtons.length; i++) {
+            indicatorButtons[i].addEventListener("click", () => {
+                goToSlide(i);
+            });
+        }
+
+        updateSlider();
+        startAutoplay();
+    };
+</script>
